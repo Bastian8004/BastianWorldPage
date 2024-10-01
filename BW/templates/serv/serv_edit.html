@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="news_section layout_padding">
+    <div class="container">
+            <div class="news_section_2">
+              <h1 class="client_taital">Edytuj usługe</h1>
+              <br>
+              <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+              </form>
+              <br>
+              <br>
+              <button onClick="history.back();" class="btn btn-primary">Powrót do serwisu</button>
+            </div>
+    </div>
+</div>
+
+{% endblock %}
+

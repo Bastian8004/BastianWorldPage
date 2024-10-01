@@ -1,0 +1,14 @@
+*.pyc
+*~
+__pycache__
+myvenv
+db.sqlite3
+/staticfiles
+.DS_Store
+/BW/migrations
+/Future
+.env
+debug.log
+debug.log.1
+debug.log.2
+debug.log.3
