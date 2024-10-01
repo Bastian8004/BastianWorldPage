@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True # ma być False na serwerze
 
-ALLOWED_HOSTS = ['*','127.0.0.1','localhost','10.0']
+ALLOWED_HOSTS = ['*','127.0.0.1','localhost','10.0','.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'BW',
