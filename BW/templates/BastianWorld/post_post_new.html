@@ -4,7 +4,6 @@
 
 <div class="news_section layout_padding">
     <div class="container">
-            <div class="news_section_2">
               <h1 class="client_taital">Nowa sekcja - {{ blog.tytul }}</h1>
               <br>
               <form method="post" enctype="multipart/form-data">
@@ -12,8 +11,7 @@
                   {{ form.as_p }}
                   <button type="submit" class="btn btn-primary">Dodaj</button>
               </form>
-              <a href="{% url 'post_detail_BW' blog.pk %}" class="btn btn-primary">Powrót </a> 
-            </div>
+              <a href="{% url 'post_detail_BW' blog.pk %}" class="btn btn-primary">Powrót </a>
     </div>
 </div>
 

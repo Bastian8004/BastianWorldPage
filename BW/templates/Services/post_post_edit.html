@@ -4,7 +4,6 @@
 
 <div class="news_section layout_padding">
     <div class="container">
-            <div class="news_section_2">
               <h1 class="client_taital">Edytuj sekcje - {{ blog.tytul }}</h1>
               <br>
               <form method="post" enctype="multipart/form-data">
@@ -13,7 +12,6 @@
                   <button type="submit" class="btn btn-primary">Zapisz</button>
               </form>
               <a href="{% url 'post_detail_S' blog.pk %}" class="btn btn-primary">Powrót </a>
-            </div>
     </div>
 </div>
 
