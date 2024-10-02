@@ -37,6 +37,7 @@
                         <div class="client_main">
                            <div class="box_left">
                                 <h1 class="client_taital">{{ blog.tytul }}</h1>
+                               <br>
                                 <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
                             </div>
                            <div class="box_right">
@@ -79,21 +80,22 @@
                      <div class="carousel-item active">
                         <div class="client_main">
                            <div class="box_left">
+                               <h1 class="client_taital">{{ blog.tytul }}</h1>
+                               <br>
                                <div class="client_img">
                                     {% if blog.zdjecie %}
                                     <img src="{{ blog.zdjecie.url }}" class="image_6">
                                     {% else %}
 
                                     {% endif %}
-                                   <div class="button_container">
-                                       <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
-
-                                   </div>
                                </div>
                             </div>
                            <div class="box_right">
-                                <h1 class="client_taital">{{ blog.tytul }}</h1>
                                 <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
+                                                              <div class="button_container">
+                                       <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+
+                                   </div>
                             </div>
                            </div>
                         </div>
