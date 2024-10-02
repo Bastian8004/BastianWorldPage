@@ -5,6 +5,7 @@
 {% block content %}
 <div class="news_section layout_padding">
     <div class="container">
+        <h1 class="client_taital">{{ blog.tytul }}</h1>
         {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'post_post_new_S' blog.pk %}'" class="btn btn-success">Nowa sekcja</button>
               {% endif %}

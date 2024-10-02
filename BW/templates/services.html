@@ -3,7 +3,7 @@
 {% block content %}
       <div class="news_section layout_padding">
          <div class="container">
-            <h1 class="client_taital">Usługi serwisowe</h1>
+            <h1 class="banner_taital">Usługi serwisowe</h1>
             {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'services_new' %}'" class="btn btn-success">Dodaj usługe</button>
               {% endif %}

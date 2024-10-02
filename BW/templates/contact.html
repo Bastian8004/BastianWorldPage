@@ -18,7 +18,9 @@
           {% endif %}
       <div class="news_section layout_padding">
       <div class="container">
-         <h1 class="client_taital">Napisz do nas</h1>
+          <br>
+         <h1 class="banner_taital">Napisz do nas</h1>
+          <br>
           <div class="email_text">
                 <form method="POST" action="{% url 'send_question_email_view' %}">
         {% csrf_token %}
@@ -33,22 +35,8 @@
         </div>
     </form>
           </div>
-          <br>
-          <br>
-          <br>
       </div>
       </div>
-          <br>
-          <br>
-          <br>
-<div class="news_section layout_padding">
-         <div class="container">
-                    {% for contact in contacts %}
-         <h3 class="news_text"><b>{{ contact.Nazwa }}</b></h3>
-         <h3 class="news_text">Telefon </h3><h2 class="news_text"><b>{{ contact.NrTel }}</b></h2>
-         <h3 class="news_text">E-mail </h3><h2 class="news_text"> <b>{{ contact.EMail }}</b></h2>
-         {% endfor %}
-         </div>
-      </div>
+
 {% endblock %}
 

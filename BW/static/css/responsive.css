@@ -508,7 +508,7 @@
         display: initial;
     }
     .banner_taital {
-        font-size: 50px;
+        font-size: 40px;
     }
     .bg-light {
         background-color: transparent !important;
@@ -629,7 +629,6 @@
         margin: 0 auto;
     }
     .footer_section {
-        background-image: url(../images/footer-mobile-bg.png);
         background-size: cover;
         padding: 50px 0px;
     }
@@ -666,4 +665,15 @@
         padding-top: 90px;
     }
 
+}
+
+@media (max-width: 768px) {
+    .button_container {
+        flex-direction: column; /* Zmienia kierunek na pionowy */
+        align-items: center; /* Wyśrodkowuje przyciski */
+    }
+
+    .read_bta {
+        width: 80%; /* Każdy przycisk zajmuje 100% szerokości */
+    }
 }
