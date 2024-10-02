@@ -312,7 +312,7 @@ def send_question_email_view(request):
         if form.is_valid():
             contact = form.save()  # Save the form and create the contact object
             contact_email_created(contact)  # Pass the contact object here
-            messages.success(request, 'Wiadomość została wysłana do Bastian World. Skontaktujemy się z Tobą!')
+            messages.success(request, 'Wiadomość została wysłana do BastianWorld. Skontaktujemy się z Tobą!')
             return redirect('contact')
         else:
             print(form.errors)  # Debugging - print any form errors to the console
