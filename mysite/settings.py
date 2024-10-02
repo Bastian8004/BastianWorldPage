@@ -158,18 +158,3 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
-CORS_REPLACE_HTTPS_REFERER = False
-HOST_SCHEME = "http://"
-SECURE_PROXY_SSL_HEADER = None
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = True #
-CSRF_COOKIE_SECURE = True #
-SECURE_HSTS_SECONDS = None
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True #
-SECURE_FRAME_DENY = False
-SECURE_BROWSER_XSS_FILTER = True  # Chroni przed atakami XSS
-X_FRAME_OPTIONS = 'DENY'  # Zapobiega osadzaniu strony w ramkach (ochrona przed clickjackingiem)
-SECURE_CONTENT_TYPE_NOSNIFF = True  # Ochrona przed atakami MIME type sniffing
-SESSION_COOKIE_HTTPONLY = True  # Ogranicza dostęp do ciasteczek sesji z poziomu JavaScript
-CSRF_COOKIE_HTTPONLY = True  # To samo dla ciasteczek CSRFsteczka sesji jako bezpieczne (tylko HTTPS)
-SECURE_HSTS_PRELOAD = True  # Pozwala dodać witrynę do listy HSTS preload w przeglądarkach

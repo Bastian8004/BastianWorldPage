@@ -314,7 +314,7 @@ button {
     text-transform: uppercase;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: #fff;
+    color: black;
     border-radius: 40px;
 }
 
@@ -326,7 +326,7 @@ button {
 
 .menu_main li a:hover {
     color: #ffffff;
-    background-color: #2b2278;
+    background-color: red;
 }
 
 .mb-lg-0,
@@ -352,7 +352,7 @@ button {
 .banner_section {
     width: 100%;
     float: left;
-    padding-bottom: 305px;
+    padding-bottom: 10px;
 }
 
 .banner_taital {
@@ -403,7 +403,7 @@ button {
 }
 
 .read_bt a:hover {
-    background-color: #2b2278;
+    background-color: red;
     color: #ffffff;
 }
 
@@ -631,13 +631,21 @@ button {
 .client_section {
     width: 100%;
     float: left;
-    padding-bottom: 160px;
+    padding-bottom: 50px;
 }
 
 .client_taital {
     width: 100%;
-    font-size: 40px;
     color: white;
+    font-weight: bold;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.client_taital_main {
+    width: 100%;
+    color: white;
+    font-size: 40px;
     font-weight: bold;
     padding-top: 30px;
     text-align: center;
@@ -663,11 +671,28 @@ button {
     width: 48%;
 }
 
+.box_left_img {
+    width: 48%;
+    padding-top: 100px;
+}
+
 .box_right {
     width: 48%;
     float: right;
-    padding-top: 65px;
     margin-left: 30px;
+}
+
+.box_right_img {
+    width: 48%;
+    float: right;
+    padding-top: 100px;
+    margin-left: 30px;
+}
+
+.client_img {
+    width: 100%;
+    float: left;
+    text-align: left;
 }
 
 .lorem_text {
@@ -691,11 +716,6 @@ button {
     float: left;
 }
 
-.client_img {
-    width: 100%;
-    float: left;
-    text-align: left;
-}
 
 .quick_icon {
     width: 100%;
@@ -1376,5 +1396,7 @@ video.responsive-video {
         right: 100%; }
       .row1 .col1.push-m12 {
         left: 100%; } }
+
+
 
 

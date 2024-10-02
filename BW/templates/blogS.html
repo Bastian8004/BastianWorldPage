@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-       <div class="client_section layout_padding">
-         <div class="container">
-            <h1 class="client_taital">Nowości i nowinki z BastianWorld</h1>
+<div class="client_section layout_padding">
+    <div class="container">
+            <h1 class="client_taital_main">Nowości i nowinki z Serwisu</h1>
             <br>
             <br>
             <div class="button_container">
@@ -11,7 +11,7 @@
                     <a href="">Coming Soon</a>
                 </div>
                 <div class="read_bt">
-                    <a href="{% url 'blogS' %}">BastianWorldg</a>
+                    <a href="{% url 'blog' %}">BastianWorld</a>
                 </div>
                 <div class="read_bt">
                     <a href="">Coming Soon</a>
@@ -22,8 +22,11 @@
               {% endif %}
             <br>
             <hr style="background-color:white">
+
              {% for blog in blogs %}
                 {% if blog.lewo == True %}
+<div class="client_section layout_padding">
+    <div class="container">
              {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'post_edit_S' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'post_delete_S' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
@@ -37,16 +40,20 @@
                            <div class="box_left">
                                 <h1 class="client_taital">{{ blog.tytul }}</h1>
                                 <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
-                                <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
                             </div>
                            <div class="box_right">
-                            <div class="client_img">
+                               <div class="client_img">
                                 {% if blog.zdjecie %}
                                 <img src="{{ blog.zdjecie.url }}" class="image_6">
+                                   <div class="button_container">
+                                       <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+
+                                   </div>
+
                                 {% else %}
 
                                 {% endif %}
-                            </div>
+                               </div>
                             </div>
                            </div>
                         </div>
@@ -57,8 +64,13 @@
                   </div>
                </div>
             </div>
+    </div>
+
+</div>
             {% elif blog.prawo == True %}
              {% if user.is_authenticated %}
+<div class="client_section layout_padding">
+    <div class="container">
              <button onclick="window.location.href='{% url 'post_edit_S' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'post_delete_S' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
@@ -69,18 +81,21 @@
                      <div class="carousel-item active">
                         <div class="client_main">
                            <div class="box_left">
-                                <div class="client_img">
+                               <div class="client_img">
                                     {% if blog.zdjecie %}
                                     <img src="{{ blog.zdjecie.url }}" class="image_6">
                                     {% else %}
 
                                     {% endif %}
-                                </div>
+                                   <div class="button_container">
+                                       <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+
+                                   </div>
+                               </div>
                             </div>
                            <div class="box_right">
                                 <h1 class="client_taital">{{ blog.tytul }}</h1>
                                 <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
-                                <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
                             </div>
                            </div>
                         </div>
@@ -91,12 +106,12 @@
                   </div>
                </div>
             </div>
-            {% endif %}
-            {% endfor %}
         </div>
 </div>
+            {% endif %}
+            {% endfor %}
+
 
 
 {% endblock %}
-
 
