@@ -34,7 +34,7 @@
                   <div class="col-md-6">
                      <div class="news_taital_box">
                         <h4 class="client_taital">{{ blog.tytul }}</h4>
-                     <p class="lorem_text">{{ blog.opis|truncatechars:200 }}</p>
+                     <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
                       <div class="read_bt"><a href="{% url 'post_detail_BW' pk=blog.pk %}">Czytaj dalej...</a></div>
                      </div>
                   </div>
@@ -68,7 +68,7 @@
                   <div class="col-md-6">
                      <div class="news_taital_box">
                         <h4 class="client_taital">{{ blog.tytul }}</h4>
-                        <p class="lorem_text">{{ blog.opis|truncatechars:200 }}</p>
+                        <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
                       <div class="read_bt"><a href="{% url 'post_detail_BW' pk=blog.pk %}">Czytaj dalej...</a></div>
                      </div>
                   </div>
