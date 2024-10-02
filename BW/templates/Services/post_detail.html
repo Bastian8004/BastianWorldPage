@@ -3,6 +3,64 @@
 
 
 {% block content %}
+      <div class="news_section layout_padding">
+         <div class="container">
+            <br>
+            <hr style="background-color:white">
+             {% for blog in blogs %}
+                {% if blog.lewo == True %}
+             {% if user.is_authenticated %}
+             <button onclick="window.location.href='{% url 'post_edit_BW' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'post_delete_BW' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
+              {% endif %}
+            <br>
+            <div class="news_section_2">
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="news_taital_box">
+                        <h4 class="client_taital">{{ blog.tytul }}</h4>
+                     <p class="lorem_text">{{ blog.opis|linebreaksbr }}</p>
+                     </div>
+                  </div>
+                  <div class="col-md-6 d-flex justify-content-center">
+                     {% if blog.zdjecie %}
+                <img src="{{ blog.zdjecie.url }}" class="image_6">
+            {% else %}
+
+            {% endif %}
+                  </div>
+               </div>
+            </div>
+            <br>
+          <hr style="background-color:white">
+         {% elif blog.prawo == True %}
+              {% if user.is_authenticated %}
+             <button onclick="window.location.href='{% url 'post_edit_BW' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'post_delete_BW' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
+              {% endif %}
+            <br>
+            <div class="news_section_2">
+               <div class="row">
+                  <div class="col-md-6 d-flex justify-content-center">
+                      {% if blog.zdjecie %}
+                <img src="{{ blog.zdjecie.url }}" class="image_6">
+            {% else %}
+
+            {% endif %}
+                  </div>
+                  <div class="col-md-6">
+                     <div class="news_taital_box">
+                        <h4 class="client_taital">{{ blog.tytul }}</h4>
+                        <p class="lorem_text">{{ blog.opis|linebreaksbr}}</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <hr style="background-color:white">
+            {% endif %}
+        {% endfor %}
+         </div>
+      </div>
 <div class="news_section layout_padding">
     <div class="container">
         {% if user.is_authenticated %}
