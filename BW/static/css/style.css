@@ -998,10 +998,13 @@ button {
 
 
 .image_6 {
-    width:100%;
-    height: auto;
-    border-radius:10%;
+   display: block;
+   max-width: 100%;
+   height: auto;
+   margin: auto;
+   border-radius: 10%;
 }
+
 
 /* footer section end */
 
