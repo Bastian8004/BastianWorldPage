@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-      <div class="news_section layout_padding">
+       <div class="client_section layout_padding">
          <div class="container">
-            <h1 class="client_taital">Nowości i nowinki z Serwisu</h1>
+            <h1 class="client_taital">Nowości i nowinki z BastianWorld</h1>
             <br>
             <br>
             <div class="button_container">
@@ -11,7 +11,7 @@
                     <a href="">Coming Soon</a>
                 </div>
                 <div class="read_bt">
-                    <a href="{% url 'blog' %}">BastianWorld</a>
+                    <a href="{% url 'blogS' %}">BastianWorldg</a>
                 </div>
                 <div class="read_bt">
                     <a href="">Coming Soon</a>
@@ -24,53 +24,79 @@
             <hr style="background-color:white">
              {% for blog in blogs %}
                 {% if blog.lewo == True %}
-              {% if user.is_authenticated %}
+             {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'post_edit_S' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'post_delete_S' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
             <br>
-            <div class="news_section_2">
-               <div class="row">
-                  <div class="col-md-6">
-                     <div class="news_taital_box">
-                        <h1 class="client_taital">{{ blog.tytul }}</h1>
-                     <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
-                      <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+            <div class="client_section_2">
+               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <div class="client_main">
+                           <div class="box_left">
+                                <h1 class="client_taital">{{ blog.tytul }}</h1>
+                                <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
+                                <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+                            </div>
+                           <div class="box_right">
+                            <div class="client_img">
+                                {% if blog.zdjecie %}
+                                <img src="{{ blog.zdjecie.url }}" class="image_6">
+                                {% else %}
+
+                                {% endif %}
+                            </div>
+                            </div>
+                           </div>
+                        </div>
                      </div>
-                  </div>
-                  <div class="col-md-6 d-flex justify-content-center">
-                     <img src="{{ blog.zdjecie.url }}" class="image_6">
+                    <br>
+                    <h3 class="news_text">{{ blog.data }}</h3>
+                    <hr style="background-color:white">
                   </div>
                </div>
             </div>
-            <br>
-            <h3 class="news_text">{{ blog.data }}</h3>
-          <hr style="background-color:white">
-         {% elif blog.prawo == True %}
-              {% if user.is_authenticated %}
+            {% elif blog.prawo == True %}
+             {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'post_edit_S' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'post_delete_S' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
             <br>
-            <div class="news_section_2">
-               <div class="row">
-                  <div class="col-md-6 d-flex justify-content-center">
-                     <img src="{{ blog.zdjecie.url }}" class="image_6">
-                  </div>
-                  <div class="col-md-6">
-                     <div class="news_taital_box">
-                        <h1 class="client_taital">{{ blog.tytul }}</h1>
-                        <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
-                      <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+            <div class="client_section_2">
+               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <div class="client_main">
+                           <div class="box_left">
+                                <div class="client_img">
+                                    {% if blog.zdjecie %}
+                                    <img src="{{ blog.zdjecie.url }}" class="image_6">
+                                    {% else %}
+
+                                    {% endif %}
+                                </div>
+                            </div>
+                           <div class="box_right">
+                                <h1 class="client_taital">{{ blog.tytul }}</h1>
+                                <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:200 }}</p>
+                                <div class="read_bt"><a href="{% url 'post_detail_S' pk=blog.pk %}">Czytaj dalej...</a></div>
+                            </div>
+                           </div>
+                        </div>
                      </div>
+                     <br>
+                    <h3 class="news_text">{{ blog.data }}</h3>
+                    <hr style="background-color:white">
                   </div>
                </div>
             </div>
-            <br>
-            <h3 class="news_text">{{ blog.data }}</h3>
-            <hr style="background-color:white">
             {% endif %}
             {% endfor %}
-         </div>
-      </div>
+        </div>
+</div>
+
+
 {% endblock %}
+
+
