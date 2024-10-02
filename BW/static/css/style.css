@@ -998,12 +998,14 @@ button {
 
 
 .image_6 {
-   display: block;
-   max-width: 100%;
-   height: auto;
-   margin: auto;
-   border-radius: 10%;
+   max-width: 100%;  /* Zapewnia, że obrazek nie przekroczy szerokości kontenera */
+   height: auto;     /* Zachowuje proporcje zdjęcia */
+   display: block;   /* Zmienia element obrazka na blokowy */
+   margin-left: auto;
+   margin-right: auto;  /* Wyśrodkowuje zdjęcie poziomo */
+   border-radius: 10%;  /* Zaokrąglenie rogów */
 }
+
 
 
 /* footer section end */
@@ -1031,6 +1033,13 @@ button {
 .copyright_text a:hover {
     color: #e27141;
 }
+
+.news_section_2 {
+   display: flex;
+   justify-content: center;   /* Wyśrodkuje zdjęcie poziomo */
+   align-items: center;       /* Wyśrodkuje zdjęcie pionowo */
+}
+
 
 .news_text{
     width: 100%;
