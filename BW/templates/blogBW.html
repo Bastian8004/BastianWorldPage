@@ -9,7 +9,7 @@
                     <a href="">Coming Soon</a>
                 </div>
                 <div class="read_bta">
-                    <a href="{% url 'blogS' %}">Serwis Blog</a>
+                    <a href="{% url 'blogS' %}">SerwisBlog</a>
                 </div>
                 <div class="read_bta">
                     <a href="">Coming Soon</a>
@@ -22,8 +22,8 @@
             <hr style="background-color:white">
 
              {% for blog in blogs %}
-                {% if blog.lewo == True %}
-<div class="client_section layout_padding">
+            {% if blog.lewo == True %}
+        <div class="client_section layout_padding">
     <div class="container">
              {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'post_edit_BW' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
@@ -31,7 +31,6 @@
               {% endif %}
             <br>
             <div class="client_section_2">
-               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                   <div class="carousel-inner">
                      <div class="carousel-item active">
                         <div class="client_main">
@@ -60,22 +59,19 @@
                     <br>
                     <h3 class="news_text">{{ blog.data }}</h3>
                     <hr style="background-color:white">
-                  </div>
                </div>
             </div>
+        </div>
     </div>
-
-</div>
             {% elif blog.prawo == True %}
-             {% if user.is_authenticated %}
-<div class="client_section layout_padding">
+            <div class="client_section layout_padding">
     <div class="container">
+             {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'post_edit_BW' pk=blog.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'post_delete_BW' pk=blog.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
             <br>
             <div class="client_section_2">
-               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                   <div class="carousel-inner">
                      <div class="carousel-item active">
                         <div class="client_main">
@@ -88,12 +84,11 @@
                                     {% else %}
 
                                     {% endif %}
-
                                </div>
                             </div>
                            <div class="box_right">
                                 <p class="lorem_text">{{ blog.opis|linebreaksbr|truncatechars:100 }}</p>
-                               <div class="button_container">
+                                                              <div class="button_container">
                                        <div class="read_bt"><a href="{% url 'post_detail_BW' pk=blog.pk %}">Czytaj dalej...</a></div>
 
                                    </div>
@@ -104,15 +99,15 @@
                      <br>
                     <h3 class="news_text">{{ blog.data }}</h3>
                     <hr style="background-color:white">
-                  </div>
                </div>
             </div>
-        </div>
+            </div>
 </div>
             {% endif %}
             {% endfor %}
 
-
-
 {% endblock %}
+
+
+
 
