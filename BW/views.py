@@ -183,8 +183,6 @@ def post_list_S(request):
     blogs = BlogS.objects.all().order_by('-published_date')
     return render(request, 'blogS.html', {'blogs': blogs})
 
-from django.shortcuts import get_object_or_404, redirect
-from django.utils import timezone
 
 def post_detail_S(request, pk):
     blog = get_object_or_404(BlogS, pk=pk)

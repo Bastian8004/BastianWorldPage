@@ -165,7 +165,7 @@ class PostS(models.Model):
                 img.save(self.zdjecie.path)
 
 class KomentarzS(models.Model):
-    post = models.ForeignKey(PostBW, on_delete=models.CASCADE)
+    post = models.ForeignKey(PostS, on_delete=models.CASCADE)
     user = models.TextField()
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
