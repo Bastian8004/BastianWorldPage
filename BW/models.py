@@ -173,7 +173,7 @@ class Qualifications(models.Model):
     photo = models.ImageField(upload_to='images/')
     left = models.BooleanField()
     right = models.BooleanField()
-    srodek = models.BooleanField()
+    srodek = models.BooleanField(blank=True,null=True)
     bez = models.BooleanField(blank=True,null=True)
 
     def publish(self):
