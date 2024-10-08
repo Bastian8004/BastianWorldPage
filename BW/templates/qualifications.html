@@ -58,7 +58,7 @@
             <hr style="background-color:white">
         {% elif qual.srodek == True %}
         {% if user.is_authenticated %}
-             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk' %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
                 <br>

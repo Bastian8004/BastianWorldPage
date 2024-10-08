@@ -168,13 +168,13 @@ class Services(models.Model):
 class Qualifications(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True,null=True)
     photo = models.ImageField(upload_to='images/')
     left = models.BooleanField()
     right = models.BooleanField()
     srodek = models.BooleanField(blank=True,null=True)
     bez = models.BooleanField(blank=True,null=True)
+    created_date = models.DateTimeField(default=timezone.now)
+    published_date = models.DateTimeField(blank=True,null=True)
 
     def publish(self):
         self.published_date = timezone.now()
