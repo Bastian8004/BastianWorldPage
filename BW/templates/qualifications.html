@@ -56,8 +56,44 @@
             </div>
             <br>
             <hr style="background-color:white">
+        {% elif qual.srodek == True %}
+        {% if user.is_authenticated %}
+             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk' %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
+              {% endif %}
+                <br>
+                <div class="news_section_2 text-center">  <!-- Center the image -->
+                    <img src="{{ qual.photo.url }}" class="image_6">
+                </div>
+                <br>
+                <hr style="background-color:white">
+
+            {% elif qual.bez == True %}
+        {% if user.is_authenticated %}
+             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
+              {% endif %}
+                <br>
+                <div class="news_section_2">
+                    <div class="row">
+                        <div class="col-md-12">  <!-- Full width description -->
+                            <div class="news_taital_box">
+                                <h1 class="client_taital">{{ qual.title }}</h1>
+                                <p class="lorem_text">{{ post.description|linebreaksbr }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% if qual.photo %}
+                <img src="{{ qual.photo.url }}" class="image_6">
+            {% else %}
+                <br>
+                <hr style="background-color:white">
             {% endif %}
-            {% endfor %}
+
+
+            {% endif %}
+        {% endfor %}
          </div>
       </div>
 {% endblock %}

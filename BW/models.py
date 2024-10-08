@@ -173,6 +173,8 @@ class Qualifications(models.Model):
     photo = models.ImageField(upload_to='images/')
     left = models.BooleanField()
     right = models.BooleanField()
+    srodek = models.BooleanField()
+    bez = models.BooleanField()
 
     def publish(self):
         self.published_date = timezone.now()
