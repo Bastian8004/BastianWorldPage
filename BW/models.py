@@ -168,7 +168,7 @@ class Services(models.Model):
 class Qualifications(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    photo = models.ImageField(upload_to='images/')
+    photo = models.ImageField(upload_to='images/', blank=True, null=True)
     left = models.BooleanField()
     right = models.BooleanField()
     srodek = models.BooleanField(blank=True,null=True)
