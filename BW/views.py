@@ -189,7 +189,6 @@ def post_detail_S(request, pk):
     post = posts.first()
     comments = KomentarzS.objects.filter(post=post).order_by('-created_date')
 
-    # Obsługa formularza komentarzy
     if request.method == 'POST':
         comment_form = KomentarzSForm(request.POST)
         if comment_form.is_valid():
@@ -197,7 +196,7 @@ def post_detail_S(request, pk):
             comment.post = post
             comment.created_at = timezone.now()
             comment.save()
-            return redirect('post_detail_S', pk=blog.pk)  # Przekierowanie po dodaniu komentarza
+            return redirect('post_detail_S', pk=blog.pk)
     else:
         comment_form = KomentarzSForm()
 
