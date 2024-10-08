@@ -17,6 +17,7 @@ DEBUG = True # ma być False na serwerze
 ALLOWED_HOSTS = ['*','127.0.0.1','localhost','10.0','.pythonanywhere.com']
 
 INSTALLED_APPS = [
+    'captcha',
     'BW',
     'imagekit',
     'django.contrib.admin',
@@ -139,6 +140,9 @@ LOGGING = {
     },
 }
 
+
+RECAPTCHA_PUBLIC_KEY = os.getenv('YOUR_SITE_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('YOUR_SECRET_KEY')
 
 
 

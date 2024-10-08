@@ -1,6 +1,6 @@
 from django import forms
-from BW.models import Services, Qualifications, Contakt, Start, ContaktForm, BlogBW, BlogS, PostBW, PostS
-
+from BW.models import Services, Qualifications, Contakt, Start, ContaktForm, BlogBW, BlogS, PostBW, PostS, KomentarzBW, KomentarzS
+from captcha.fields import CaptchaField
 
 class BlogBWForm(forms.ModelForm):
 
@@ -14,6 +14,27 @@ class PostBWForm(forms.ModelForm):
         model = PostBW
         fields = ['tytul','opis','zdjecie', 'lewo', 'prawo', 'srodek', 'bez']
 
+class KomentarzBWForm(forms.ModelForm):
+    captcha = CaptchaField()
+    class Meta:
+        model = KomentarzBW
+        fields = ['content', 'user']
+        widgets = {
+            'user': forms.TextInput(attrs={'placeholder': 'Pseudonim (np.: Nick, Imie)', 'class': 'email-bt'}),
+            'content': forms.Textarea(attrs={'placeholder': 'Dodaj komentarz...', 'class': 'massage-bt', 'rows': 3}),
+        }
+
+    def clean_user(self):
+        user = self.cleaned_data.get('user')
+        if len(user) < 2:
+            raise forms.ValidationError("Pseudonim musi mieć co najmniej 2 znaki.")
+        return user
+
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        if len(content) < 5:
+            raise forms.ValidationError("Komentarz musi mieć co najmniej 5 znaków.")
+        return content
 
 class BlogSForm(forms.ModelForm):
 
@@ -26,6 +47,28 @@ class PostSForm(forms.ModelForm):
     class Meta:
         model = PostS
         fields = ['tytul','opis','zdjecie', 'lewo', 'prawo', 'srodek', 'bez']
+
+class KomentarzSForm(forms.ModelForm):
+    captcha = CaptchaField()
+    class Meta:
+        model = KomentarzS
+        fields = ['content', 'user', 'captcha']
+        widgets = {
+            'user': forms.TextInput(attrs={'placeholder': 'Pseudonim (np.: Nick, Imie)', 'class': 'email-bt'}),
+            'content': forms.Textarea(attrs={'placeholder': 'Dodaj komentarz...', 'class': 'massage-bt', 'rows': 3}),
+        }
+
+    def clean_user(self):
+        user = self.cleaned_data.get('user')
+        if len(user) < 2:
+            raise forms.ValidationError("Pseudonim musi mieć co najmniej 2 znaki.")
+        return user
+
+    def clean_content(self):
+        content = self.cleaned_data.get('content')
+        if len(content) < 5:
+            raise forms.ValidationError("Komentarz musi mieć co najmniej 5 znaków.")
+        return content
 
 class ServicesForm(forms.ModelForm):
 
@@ -64,3 +107,5 @@ class StartForm(forms.ModelForm):
     class Meta:
         model = Start
         exclude = ['title', 'description']
+
+

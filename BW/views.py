@@ -5,8 +5,8 @@ from django.urls import reverse
 import mysite.settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
-from .forms import ServicesForm, QualForm, ContactFormForm, BlogSForm, BlogBWForm, PostSForm, PostBWForm
-from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS
+from .forms import ServicesForm, QualForm, ContactFormForm, BlogSForm, BlogBWForm, PostSForm, PostBWForm, KomentarzBWForm, KomentarzSForm
+from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS, KomentarzBW, KomentarzS
 
 def start(request):
     starts = Start.objects.all().order_by()
@@ -91,10 +91,28 @@ def post_list_BW(request):
     return render(request, 'blogBW.html', {'blogs': blogs})
 
 def post_detail_BW(request, pk):
-    blog = BlogBW.objects.get(pk=pk)
+    blog = get_object_or_404(BlogBW, pk=pk)
     posts = PostBW.objects.filter(blog=blog)
-    return render(request, 'BastianWorld/post_detail.html', {'blog': blog, 'posts': posts})
+    post = posts.first()
+    comments = KomentarzBW.objects.filter(post=post).order_by('-created_date')
 
+    if request.method == 'POST':
+        comment_form = KomentarzBWForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.created_at = timezone.now()
+            comment.save()
+            return redirect('post_detail_BW', pk=blog.pk)
+    else:
+        comment_form = KomentarzBWForm()
+
+    return render(request, 'BastianWorld/post_detail.html', {
+        'blog': blog,
+        'posts': posts,
+        'comments': comments,
+        'comment_form': comment_form,
+    })
 
 def post_new_BW(request):
     if request.method == "POST":
@@ -168,7 +186,27 @@ def post_list_S(request):
 def post_detail_S(request, pk):
     blog = BlogS.objects.get(pk=pk)
     posts = PostS.objects.filter(blog=blog)
-    return render(request, 'Services/post_detail.html', {'blog': blog, 'posts': posts})
+    post = posts.first()  # Zakładam, że chcesz wyświetlać komentarze dla pierwszego posta w blogu (można to zmodyfikować)
+    comments = KomentarzS.objects.filter(post=post).order_by('-created_date')
+
+    # Obsługa formularza komentarzy
+    if request.method == 'POST':
+        comment_form = KomentarzSForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.created_at = timezone.now()
+            comment.save()
+            return redirect('post_detail_S', pk=blog.pk)  # Przekierowanie po dodaniu komentarza
+    else:
+        comment_form = KomentarzSForm()
+
+    return render(request, 'Services/post_detail.html', {
+        'blog': blog,
+        'posts': posts,
+        'comments': comments,
+        'comment_form': comment_form,
+    })
 
 def post_new_S(request):
     if request.method == "POST":

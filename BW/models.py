@@ -78,6 +78,21 @@ class PostBW(models.Model):
                 img.thumbnail(output_size)  # Zmienia rozmiar z zachowaniem proporcji
                 img.save(self.zdjecie.path)
 
+class KomentarzBW(models.Model):
+    post = models.ForeignKey(PostBW, on_delete=models.CASCADE)
+    user = models.TextField()
+    content = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.content[:20]}"
+
+    def data(self):
+        if self.created_date:
+            return self.created_date.strftime('%d-%m-%Y, %H:%M')
+        return "Brak daty"
+
+
 class BlogS(models.Model):
     tytul = models.CharField(max_length=70, blank=True, null=True)
     opis = models.TextField(max_length=1024, blank=True, null=True)
@@ -148,6 +163,20 @@ class PostS(models.Model):
                 output_size = (max_width, max_height)
                 img.thumbnail(output_size)  # Zmienia rozmiar z zachowaniem proporcji
                 img.save(self.zdjecie.path)
+
+class KomentarzS(models.Model):
+    post = models.ForeignKey(PostBW, on_delete=models.CASCADE)
+    user = models.TextField()
+    content = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.content[:20]}"
+
+    def data(self):
+        if self.created_date:
+            return self.created_date.strftime('%d-%m-%Y, %H:%M')
+        return "Brak daty"
 
 class Services(models.Model):
     title = models.CharField(max_length=70, blank=True, null=True)
