@@ -184,9 +184,9 @@ def post_list_S(request):
     return render(request, 'blogS.html', {'blogs': blogs})
 
 def post_detail_S(request, pk):
-    blog = BlogS.objects.get(pk=pk)
+    blog = get_object_or_404(BlogS, pk=pk)
     posts = PostS.objects.filter(blog=blog)
-    post = posts.first()  # Zakładam, że chcesz wyświetlać komentarze dla pierwszego posta w blogu (można to zmodyfikować)
+    post = posts.first()
     comments = KomentarzS.objects.filter(post=post).order_by('-created_date')
 
     # Obsługa formularza komentarzy
