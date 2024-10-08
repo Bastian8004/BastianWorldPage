@@ -183,13 +183,21 @@ def post_list_S(request):
     blogs = BlogS.objects.all().order_by('-published_date')
     return render(request, 'blogS.html', {'blogs': blogs})
 
+from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
+
 def post_detail_S(request, pk):
     blog = get_object_or_404(BlogS, pk=pk)
     posts = PostS.objects.filter(blog=blog)
-    post = posts.first()
-    comments = KomentarzS.objects.filter(post=post).order_by('-created_date')
+    post = posts.first()  # Pobiera pierwszy post
 
-    if request.method == 'POST':
+    if post:  # Sprawdzenie, czy istnieje post
+        comments = KomentarzS.objects.filter(post=post).order_by('-created_date')
+    else:
+        comments = []  # Jeśli nie ma postu, komentarze będą puste
+
+    # Obsługa formularza komentarzy
+    if request.method == 'POST' and post:
         comment_form = KomentarzSForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -205,7 +213,9 @@ def post_detail_S(request, pk):
         'posts': posts,
         'comments': comments,
         'comment_form': comment_form,
+        'post': post,  # Możesz przekazać post, aby wyświetlić dodatkowe informacje w szablonie
     })
+
 
 def post_new_S(request):
     if request.method == "POST":
