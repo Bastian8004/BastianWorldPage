@@ -174,7 +174,7 @@ class Qualifications(models.Model):
     left = models.BooleanField()
     right = models.BooleanField()
     srodek = models.BooleanField()
-    bez = models.BooleanField()
+    bez = models.BooleanField(blank=True,null=True)
 
     def publish(self):
         self.published_date = timezone.now()
