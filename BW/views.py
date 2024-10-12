@@ -93,25 +93,10 @@ def post_list_BW(request):
 def post_detail_BW(request, pk):
     blog = get_object_or_404(BlogBW, pk=pk)
     posts = PostBW.objects.filter(blog=blog)
-    post = posts.first()
-    comments = KomentarzBW.objects.filter(post=post).order_by('-created_date')
-
-    if request.method == 'POST':
-        comment_form = KomentarzBWForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.post = post
-            comment.created_at = timezone.now()
-            comment.save()
-            return redirect('post_detail_BW', pk=blog.pk)
-    else:
-        comment_form = KomentarzBWForm()
 
     return render(request, 'BastianWorld/post_detail.html', {
         'blog': blog,
         'posts': posts,
-        'comments': comments,
-        'comment_form': comment_form,
     })
 
 def post_new_BW(request):
@@ -187,31 +172,10 @@ def post_list_S(request):
 def post_detail_S(request, pk):
     blog = get_object_or_404(BlogS, pk=pk)
     posts = PostS.objects.filter(blog=blog)
-    post = posts.first()  # Pobiera pierwszy post
-
-    if post:  # Sprawdzenie, czy istnieje post
-        comments = KomentarzS.objects.filter(post=post).order_by('-created_date')
-    else:
-        comments = []  # Jeśli nie ma postu, komentarze będą puste
-
-    # Obsługa formularza komentarzy
-    if request.method == 'POST' and post:
-        comment_form = KomentarzSForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.post = post
-            comment.created_at = timezone.now()
-            comment.save()
-            return redirect('post_detail_S', pk=blog.pk)
-    else:
-        comment_form = KomentarzSForm()
 
     return render(request, 'Services/post_detail.html', {
         'blog': blog,
         'posts': posts,
-        'comments': comments,
-        'comment_form': comment_form,
-        'post': post,  # Możesz przekazać post, aby wyświetlić dodatkowe informacje w szablonie
     })
 
 

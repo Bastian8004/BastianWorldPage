@@ -487,7 +487,6 @@
         display: none;
     }
     .header_section {
-        background-image: url(../images/banner-bg.png);
         background-size: cover;
         padding: 0px; 
     }

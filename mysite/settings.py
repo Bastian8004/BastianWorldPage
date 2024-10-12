@@ -17,6 +17,7 @@ DEBUG = True # ma być False na serwerze
 ALLOWED_HOSTS = ['*','127.0.0.1','localhost','10.0','.pythonanywhere.com']
 
 INSTALLED_APPS = [
+    'captcha',
     'BW',
     'imagekit',
     'django.contrib.admin',

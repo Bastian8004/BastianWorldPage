@@ -99,35 +99,6 @@
         <h3 class="news_text">{{ blog.data }}</h3>
         <hr style="background-color:white">
 
-<div class="news_section layout_padding">
-    <h1 class="client_taital">Komentarze</h1>
-    <div class="email_text">
-        <br>
-        <hr style="background-color:white">
-        <br>
-        {% for comment in comments %}
-        <h1 class="client_taital">{{ comment.user }}:</h1><h3 class="news_text">{{ comment.content }}</h3> <br>
-            <small>{{ comment.data }}</small>
-            <br>
-            <hr style="background-color:white">
-            <br>
-        {% empty %}
-            <h3 class="news_text">Nie ma jeszcze komentarzy. Bądź pierwszym, który skomentuje ten post!</h3>
-            <br>
-            <hr style="background-color:white">
-            <br>
-        {% endfor %}
-        <h4 class="client_taital">Dodaj komentarz:</h4>
-        <form method="post">
-            {% csrf_token %}
-            {{ comment_form.user }}
-            {{ comment_form.content }}
-            {{ comment_form.captcha }}
-            <button type="submit" class="btn btn-primary">Wyślij komentarz</button>
-        </form>
-    </div>
-</div>
-
     </div>
 </div>
 
