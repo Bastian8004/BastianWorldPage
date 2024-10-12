@@ -1,5 +1,5 @@
 from django import forms
-from BW.models import Services, Qualifications, Contakt, Start, ContaktForm, BlogBW, BlogS, PostBW, PostS, KomentarzBW, KomentarzS
+from BW.models import Services, Qualifications, Contakt, Start, ContaktForm, BlogBW, BlogS, PostBW, PostS
 from captcha.fields import CaptchaField
 
 class BlogBWForm(forms.ModelForm):

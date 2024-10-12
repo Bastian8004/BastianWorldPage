@@ -5,8 +5,8 @@ from django.urls import reverse
 import mysite.settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
-from .forms import ServicesForm, QualForm, ContactFormForm, BlogSForm, BlogBWForm, PostSForm, PostBWForm, KomentarzBWForm, KomentarzSForm
-from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS, KomentarzBW, KomentarzS
+from .forms import ServicesForm, QualForm, ContactFormForm, BlogSForm, BlogBWForm, PostSForm, PostBWForm
+from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS
 
 def start(request):
     starts = Start.objects.all().order_by()
