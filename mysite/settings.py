@@ -3,16 +3,16 @@ import posixpath
 from dotenv import load_dotenv
 
 # Załaduj zmienne środowiskowe
-load_dotenv()
+load_dotenv('/home/BastianWorld/bastianworld.pythonanywhere.com/.env')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # ma być False na serwerze
+DEBUG = False # ma być False na serwerze
 
 ALLOWED_HOSTS = ['*','127.0.0.1','localhost','10.0','.pythonanywhere.com']
 
