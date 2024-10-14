@@ -48,6 +48,7 @@ class ContactForm(forms.ModelForm):
         exclude = ['Nazwa', 'NrTel', 'Email','GitHub', 'LinkedIn', 'Facebook']
 
 class ContactFormForm(forms.ModelForm):
+    captcha = CaptchaField()
     class Meta:
         model = ContaktForm
         fields = ['dane', 'temat', 'nrtel', 'email', 'wiadomosc']
