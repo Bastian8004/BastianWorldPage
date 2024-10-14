@@ -27,7 +27,7 @@ def qualifications_new(request):
             qual = form.save(commit=False)
             qual.published_date = timezone.now()
             qual.save()
-            return redirect('qualifications')
+            return redirect('about_us')
     else:
         form = QualForm()
     return render(request, 'qual/qual_new.html', {'form': form})
@@ -41,7 +41,7 @@ def qualifications_edit(request, pk):
             qual = form.save(commit=False)
             qual.published_date = timezone.now()
             qual.save()
-            return redirect('qualifications')
+            return redirect('about_us')
     else:
         form = QualForm(instance=qual)
     return render(request, 'qual/qual_edit.html', {'form': form})
@@ -49,7 +49,7 @@ def qualifications_edit(request, pk):
 def qualifications_delete(request, pk):
     qual = get_object_or_404(Qualifications, pk=pk)
     qual.delete()
-    return redirect(reverse('qualifications'))
+    return redirect(reverse('about_us'))
 
 def services(request):
     services = Services.objects.all().order_by('-published_date')
