@@ -9,6 +9,9 @@
               {% endif %}
             <br>
           <br>
+             <br>
+          <br>
+             <br>
           <hr style="background-color:white">
             {% for qual in quals %}
             {% if qual.right == True %}
@@ -74,6 +77,8 @@
              <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
                 <br>
+             <br>
+             <br>
                 <div class="news_section_2">
                     <div class="row">
                         <div class="col-md-12">  <!-- Full width description -->
