@@ -186,7 +186,7 @@ class Qualifications(models.Model):
         if self.title:  # Sprawdzenie, czy tytuł nie jest pusty
             return self.title
         elif self.published_date:  # Jeśli tytuł jest pusty, ale jest data publikacji
-            return str(self.published_date+" - brak tytułu")
+            return str(self.published_date)
         else:
             return "Brak tytułu i daty publikacji"
 
