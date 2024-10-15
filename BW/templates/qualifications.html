@@ -14,7 +14,8 @@
              <br>
           <hr style="background-color:white">
             {% for qual in quals %}
-            {% if qual.right == True %}
+            {% if qual.prawo
+             == True %}
              {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'about_us_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'about_us_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
@@ -37,7 +38,7 @@
             </div>
             <br>
             <hr style="background-color:white">
-            {% elif qual.left == True %}
+            {% elif qual.lewo == True %}
              {% if user.is_authenticated %}
              <button onclick="window.location.href='{% url 'about_us_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
              <button onclick="window.location.href='{% url 'about_us_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>

@@ -39,7 +39,7 @@ class QualForm(forms.ModelForm):
 
     class Meta:
         model = Qualifications
-        fields = ['title', 'description', 'photo',  'left', 'right', 'srodek', 'bez']
+        fields = ['title', 'description', 'photo',  'lewo', 'prawo', 'srodek', 'bez']
 
 
 class ContactForm(forms.ModelForm):
