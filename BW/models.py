@@ -183,7 +183,12 @@ class Qualifications(models.Model):
         self.save()
 
     def __str__(self):
-        return self.title
+        if self.title:  # Sprawdzenie, czy tytuł nie jest pusty
+            return self.title
+        elif self.published_date:  # Jeśli tytuł jest pusty, ale jest data publikacji
+            return str(self.published_date+" - brak tytułu")
+        else:
+            return "Brak tytułu i daty publikacji"
 
 class Contakt(models.Model):
     Nazwa = models.CharField(max_length=70,blank=True, null=True)
