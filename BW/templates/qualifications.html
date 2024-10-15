@@ -5,7 +5,7 @@
          <div class="container">
             <h1 class="banner_taital">Kim jesteśmy?</h1>
              {% if user.is_authenticated %}
-             <button onclick="window.location.href='{% url 'qualifications_new' %}'" class="btn btn-success">Dodaj</button>
+             <button onclick="window.location.href='{% url 'about_us_new' %}'" class="btn btn-success">Dodaj</button>
               {% endif %}
             <br>
           <br>
@@ -16,8 +16,8 @@
             {% for qual in quals %}
             {% if qual.right == True %}
              {% if user.is_authenticated %}
-             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
-             <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
+             <button onclick="window.location.href='{% url 'about_us_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'about_us_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
              <br>
              <br>
@@ -39,8 +39,8 @@
             <hr style="background-color:white">
             {% elif qual.left == True %}
              {% if user.is_authenticated %}
-             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
-             <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
+             <button onclick="window.location.href='{% url 'about_us_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'about_us_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
             <br>
              <br>
@@ -61,8 +61,8 @@
             <hr style="background-color:white">
         {% elif qual.srodek == True %}
         {% if user.is_authenticated %}
-             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
-             <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
+             <button onclick="window.location.href='{% url 'about_us_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'about_us_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
                 <br>
                 <div class="news_section_2 text-center">  <!-- Center the image -->
@@ -73,8 +73,8 @@
 
             {% elif qual.bez == True %}
         {% if user.is_authenticated %}
-             <button onclick="window.location.href='{% url 'qualifications_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
-             <button onclick="window.location.href='{% url 'qualifications_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
+             <button onclick="window.location.href='{% url 'about_us_edit' pk=qual.pk %}'" class="btn btn-primary">Edycja</button>
+             <button onclick="window.location.href='{% url 'about_us_delete' pk=qual.pk %}'" class="btn btn-danger">Usuń</button>
               {% endif %}
                 <br>
              <br>
