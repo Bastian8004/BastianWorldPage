@@ -1,0 +1,29 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+
+<h1 class="banner_taital">Subskrybcja administracyjna</h1>
+<div class="client_section layout_padding">
+    <div class="container">
+          <div class="email_text">
+                {% if subscription and subscription.active %}
+            <p>Twoja subskrypcja jest aktywna. Jeśli chcesz ją anulować, kliknij poniżej przycisk "Rezygnuję". Pamiętaj, że jeśli to zrobisz, Twoja strona może zniknąć z internetu.</p>
+            <form action="{% url 'cancel_subscription' %}" method="POST">
+                {% csrf_token %}
+                              <div class="send_btn">
+                <button type="submit">Rezygnuję</button>
+                              </div>
+            </form>
+        {% else %}
+            <p>Wykup subskrypcję, aby uzyskać dostęp do usług administracyjnych dla Twojej strony.</p>
+            <form action="{% url 'checkout' %}" method="POST">
+                {% csrf_token %}
+                              <div class="send_btn">
+                <button type="submit">Subskrybuj</button>
+                              </div>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+<h1 class="banner_taital">Subskrypcja została anulowana</h1>
+<div class="client_section layout_padding">
+    <div class="container">
+          <div class="email_text">
+    <p>Wygląda na to, że anulowano płatność. Możesz spróbować ponownie.</p>
+        <div class="send_btn">
+            <a href="{% url 'profile' %}">Wróć do strony subskrypcji</a>
+        </div>
+          </div>
+    </div>
+</div>
+{% endblock %}
+
+

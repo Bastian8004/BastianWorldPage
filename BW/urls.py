@@ -30,6 +30,12 @@ urlpatterns = [
     path('services/<int:pk>/delete/', views.services_delete, name='services_delete'),
     path('contact', views.contact, name='contact'),
     path('contact/email/', views.send_question_email_view, name='send_question_email_view'),
+    path('profile', views.profile, name='profile'),
+    path('create-checkout-session/', views.create_checkout_session, name='checkout'),
+    path('webhook/', views.stripe_webhook, name='stripe-webhook'),
+    path('subscription/success/', views.subscription_success, name='subscription_success'),
+    path('subscription/cancel/', views.subscription_cancel, name='subscription_cancel'),
+    path('subscription/cancel_subscription/', views.cancel_subscription, name='cancel_subscription'),
 
 
 ]

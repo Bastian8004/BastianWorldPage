@@ -1430,3 +1430,78 @@ video.responsive-video {
 }
 
 
+/* Ogólne ustawienia dla formularza */
+
+/* Etykiety formularza */
+.email_text label {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #fff; /* Biały kolor tekstu */
+    margin-bottom: 5px;
+}
+
+/* Pola formularza */
+.email_text input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px; /* Odstęp między polami */
+}
+
+/* Checkbox "Zapamiętaj mnie" */
+.form-check {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.form-check input {
+    margin-right: 10px; /* Odstęp między checkboxem a etykietą */
+}
+
+.form-check label {
+    color: #fff;
+    font-size: 16px;
+}
+
+/* Przycisk "Zaloguj się" */
+.send_btn button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.send_btn button:hover {
+    background-color: #444;
+}
+
+/* Styl dla linków */
+p a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.send_btn a {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+
+.send_btn a:hover {
+    background-color: #444;
+    border-color: #444;
+}

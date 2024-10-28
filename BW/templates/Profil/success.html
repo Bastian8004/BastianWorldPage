@@ -1,0 +1,17 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+<h1 class="banner_taital">Dziękujemy za wykupienie subskrypcji!</h1>
+<div class="client_section layout_padding">
+    <div class="container">
+          <div class="email_text">
+    <p>Twoja subskrypcja została aktywowana. Możesz teraz korzystać z usług administracyjnych.</p>
+              <div class="send_btn">
+                      <a href="{% url 'profile' %}">Powrót</a>
+              </div>
+          </div>
+    </div>
+</div>
+{% endblock %}
+
+

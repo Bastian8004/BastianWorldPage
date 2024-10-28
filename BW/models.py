@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 from django.utils import timezone
 import uuid
+from django.conf import settings
 from PIL import Image
 from django.db import models
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFit
+from django.contrib.auth.models import User
 
 
 class BlogBW(models.Model):
@@ -173,8 +173,8 @@ class Qualifications(models.Model):
     photo = models.ImageField(upload_to='images/', blank=True, null=True)
     lewo = models.BooleanField()
     prawo = models.BooleanField()
-    srodek = models.BooleanField(null=True, blank=True)
-    bez = models.BooleanField(null=True, blank=True)
+    srodek = models.BooleanField(null=True, blank=True, default=False)
+    bez = models.BooleanField(null=True, blank=True, default=False)
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 
@@ -214,3 +214,13 @@ class ContaktForm(models.Model):
 class Start(models.Model):
     title = models.CharField(max_length=70, blank=True, null=True)
     description = models.TextField(max_length=1024, blank=True, null=True)
+
+class Subscription(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    stripe_subscription_id = models.CharField(max_length=255)
+    active = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Subskrypcja - {self.user.username}"

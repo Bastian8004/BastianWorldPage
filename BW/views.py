@@ -6,7 +6,15 @@ import mysite.settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from .forms import ServicesForm, QualForm, ContactFormForm, BlogSForm, BlogBWForm, PostSForm, PostBWForm
-from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS
+from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS, Subscription
+import stripe
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 def start(request):
     starts = Start.objects.all().order_by()
@@ -331,3 +339,132 @@ def send_question_email_view(request):
     return render(request, 'contact.html', {'form': form})
 
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@login_required
+def create_checkout_session(request):
+    # Sprawdź, czy użytkownik jest zalogowany
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'User is not authenticated'}, status=403)
+
+    # Tworzenie sesji checkout Stripe
+    checkout_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        mode='subscription',
+        line_items=[{
+            'price': 'price_1QCkGrHsa1u2leX5MD4nNzPw',  # Użyj poprawnego price_id
+            'quantity': 1,
+        }],
+        success_url='http://127.0.0.1:8000/subscription/success/',
+        cancel_url='http://127.0.0.1:8000/subscription/cancel/',
+    )
+
+    # Przekierowanie do sesji checkout
+    return redirect(checkout_session.url, code=303)
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
+    event = None
+
+    try:
+        # Tworzenie zdarzenia w Stripe i weryfikacja sygnatury
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+        )
+    except ValueError as e:
+        # Błąd w formacie danych
+        return JsonResponse({'error': str(e)}, status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Nieudana weryfikacja sygnatury
+        return JsonResponse({'error': str(e)}, status=400)
+
+    # Obsługa eventów z webhooka
+    if event['type'] == 'invoice.payment_succeeded':
+        invoice = event['data']['object']
+        subscription_id = invoice.get('subscription')
+
+        if subscription_id:
+            # Aktualizacja lub utworzenie subskrypcji jako aktywnej
+            subscription, created = Subscription.objects.get_or_create(
+                stripe_subscription_id=subscription_id,
+                defaults={'user': request.user, 'active': True}
+            )
+            if not created:
+                subscription.active = True
+                subscription.save()
+
+    elif event['type'] == 'customer.subscription.created':
+        # Obsługa nowej subskrypcji
+        subscription_data = event['data']['object']
+        user = request.user  # Zakładając, że znajdziesz użytkownika np. po customer_id w Stripe
+
+        Subscription.objects.update_or_create(
+            user=user,
+            stripe_subscription_id=subscription_data['id'],
+            defaults={'active': True}
+        )
+
+    elif event['type'] == 'customer.subscription.deleted':
+        # Zdarzenie dla usunięcia subskrypcji
+        subscription_data = event['data']['object']
+        subscription_id = subscription_data['id']
+
+        try:
+            # Znalezienie i dezaktywacja subskrypcji
+            subscription = Subscription.objects.get(stripe_subscription_id=subscription_id)
+            subscription.active = False
+            subscription.save()
+        except Subscription.DoesNotExist:
+            pass
+
+    elif event['type'] == 'customer.subscription.updated':
+        # Obsługa aktualizacji subskrypcji, jeśli w przyszłości dodasz plany
+        subscription_data = event['data']['object']
+        subscription_id = subscription_data['id']
+
+        try:
+            # Znalezienie i aktualizacja subskrypcji
+            subscription = Subscription.objects.get(stripe_subscription_id=subscription_id)
+            subscription.active = subscription_data['status'] == 'active'
+            subscription.save()
+        except Subscription.DoesNotExist:
+            pass
+
+    return JsonResponse({'status': 'success'}, status=200)
+
+
+def subscription_success(request):
+    return render(request, 'Profil/success.html')
+
+def subscription_cancel(request):
+    return render(request, 'Profil/cancel.html')
+
+def profile(request):
+    try:
+        # Pobranie subskrypcji użytkownika
+        subscription = Subscription.objects.get(user=request.user)
+    except Subscription.DoesNotExist:
+        subscription = None
+
+    return render(request, 'profile.html', {
+        'subscription': subscription,
+    })
+
+@login_required
+def cancel_subscription(request):
+    try:
+        subscription = Subscription.objects.get(user=request.user)
+        if subscription and subscription.active:
+            # Anulowanie subskrypcji na Stripe
+            stripe.Subscription.modify(
+                subscription.stripe_subscription_id,
+                cancel_at_period_end=True
+            )
+            # Aktualizacja w bazie danych
+            subscription.active = False
+            subscription.save()
+        return redirect('profile')
+    except Subscription.DoesNotExist:
+        return redirect('profile')

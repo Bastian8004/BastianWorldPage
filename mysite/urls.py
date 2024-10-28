@@ -16,10 +16,7 @@ admin.autodiscover()
 urlpatterns = [
     path('', include('BW.urls')),
     # Auth related urls
-
-    path('accounts/login/', views.LoginView.as_view(), name='login'),
-    path('logout/', views.LogoutView.as_view(next_page='/'), name='logout'),
-
+    path('accounts/', include('allauth.urls')),
      # Uncomment the next line to enable the admin:
     path('nimda/', admin.site.urls),
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
