@@ -16,7 +16,7 @@ import stripe
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from . import models
-from mysite.settings import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
+from mysite.settings import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ALLOWED_HOSTS
 
 def start(request):
     starts = Start.objects.all().order_by()
@@ -342,7 +342,7 @@ def send_question_email_view(request):
 
 
 
-DOMAIN = "http://bastianworld.pl/"
+DOMAIN = ALLOWED_HOSTS
 stripe.api_key = STRIPE_SECRET_KEY
 
 
