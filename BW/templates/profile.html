@@ -2,28 +2,55 @@
 
 {% block content %}
 
-<h1 class="banner_taital">Subskrybcja administracyjna</h1>
-<div class="client_section layout_padding">
-    <div class="container">
-          <div class="email_text">
-                {% if subscription and subscription.active %}
-            <p>Twoja subskrypcja jest aktywna. Jeśli chcesz ją anulować, kliknij poniżej przycisk "Rezygnuję". Pamiętaj, że jeśli to zrobisz, Twoja strona może zniknąć z internetu.</p>
-            <form action="{% url 'cancel_subscription' %}" method="POST">
+<h1 class="banner_taital">Subskrypcja administracyjna</h1>
+
+    <div class="client_section layout_padding">
+      <div class="container">
+        <div class="email_text">
+          {% if subscription %}
+            {% if subscription.has_access %}
+              <div class="product Box-root">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="16px" viewBox="0 0 14 16" version="1.1">
+                  <defs/>
+                  <g id="Flow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="0-Default" transform="translate(-121.000000, -40.000000)" fill="#E184DF">
+                      <path d="M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z" id="Pilcrow"/>
+                    </g>
+                  </g>
+                </svg>
+                <div class="description Box-root">
+                  <h3>Twoja subskrypcja jest aktywna!</h3>
+                </div>
+              </div>
+              <form action="{% url 'direct-to-customer-portal' %}" method="POST">
                 {% csrf_token %}
-                              <div class="send_btn">
-                <button type="submit">Rezygnuję</button>
-                              </div>
-            </form>
-        {% else %}
-            <p>Wykup subskrypcję, aby uzyskać dostęp do usług administracyjnych dla Twojej strony.</p>
+                <input type="hidden" id="session-id" name="session_id" value="" />
+                <div class="send_btn">
+                <button id="checkout-and-portal-button" type="submit">Zarządzaj subskrypcją</button>
+                </div>
+              </form>
+            {% else %}
+              <p>Wykup subskrypcję, aby uzyskać dostęp do usług administracyjnych dla Twojej strony.</p>
+              <form action="{% url 'checkout' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="price_lookup_key" value="standard_monthly" />
+                <div class="send_btn">
+                <button id="checkout-and-portal-button" type="submit">Subskrybuj</button>
+                </div>
+              </form>
+            {% endif %}
+          {% else %}
+            <p>Nie znaleziono subskrypcji. Proszę wykupić subskrypcję, aby uzyskać dostęp.</p>
             <form action="{% url 'checkout' %}" method="POST">
-                {% csrf_token %}
-                              <div class="send_btn">
-                <button type="submit">Subskrybuj</button>
-                              </div>
+              {% csrf_token %}
+              <input type="hidden" name="price_lookup_key" value="standard_monthly" />
+              <div class="send_btn">
+              <button id="checkout-and-portal-button" type="submit">Subskrybuj</button>
+              </div>
             </form>
-        {% endif %}
+          {% endif %}
+        </div>
+      </div>
     </div>
-</div>
 
 {% endblock %}

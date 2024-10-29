@@ -215,12 +215,15 @@ class Start(models.Model):
     title = models.CharField(max_length=70, blank=True, null=True)
     description = models.TextField(max_length=1024, blank=True, null=True)
 
-class Subscription(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    stripe_subscription_id = models.CharField(max_length=255)
-    active = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class CheckoutSessionRecord(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, help_text="The user who initiated the checkout."
+    )
+    stripe_customer_id = models.CharField(max_length=255)
+    stripe_checkout_session_id = models.CharField(max_length=255)
+    stripe_price_id = models.CharField(max_length=255)
+    has_access = models.BooleanField(default=False)
+    is_completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Subskrypcja - {self.user.username}"
+        return f"Subskrypcja - {self.user}"

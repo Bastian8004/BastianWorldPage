@@ -32,10 +32,11 @@ urlpatterns = [
     path('contact/email/', views.send_question_email_view, name='send_question_email_view'),
     path('profile', views.profile, name='profile'),
     path('create-checkout-session/', views.create_checkout_session, name='checkout'),
-    path('webhook/', views.stripe_webhook, name='stripe-webhook'),
-    path('subscription/success/', views.subscription_success, name='subscription_success'),
-    path('subscription/cancel/', views.subscription_cancel, name='subscription_cancel'),
-    path('subscription/cancel_subscription/', views.cancel_subscription, name='cancel_subscription'),
-
+    path('subscribe/', views.subscribe, name='subscribe'),
+    path('cancel/', views.cancel, name='cancel'),
+    path('success/', views.success, name='success'),
+    path('create-checkout-session/', views.create_checkout_session, name='create-checkout-session'),
+    path('direct-to-customer-portal/', views.direct_to_customer_portal, name='direct-to-customer-portal'),
+    path('collect-stripe-webhook/', views.collect_stripe_webhook, name='collect-stripe-webhook')
 
 ]

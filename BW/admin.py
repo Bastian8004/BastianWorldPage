@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from BW.models import Services, Qualifications, Contakt, Start, BlogS, BlogBW, PostS, PostBW, Subscription
+from BW.models import Services, Qualifications, Contakt, Start, BlogS, BlogBW, PostS, PostBW, CheckoutSessionRecord
 from BW.forms import ServicesForm
 
 
@@ -18,7 +18,7 @@ admin.site.register(Start)
 admin.site.register(Services)
 admin.site.register(Qualifications)
 admin.site.register(Contakt)
-admin.site.register(Subscription)
+admin.site.register(CheckoutSessionRecord)
 
 
 class PostBWInline(admin.TabularInline):
