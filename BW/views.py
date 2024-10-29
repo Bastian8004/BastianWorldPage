@@ -343,7 +343,7 @@ def send_question_email_view(request):
 
 
 DOMAIN = "http://localhost:8000"
-stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 
 def subscribe(request) -> HttpResponse:
