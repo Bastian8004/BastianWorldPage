@@ -16,7 +16,7 @@ import stripe
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from . import models
-
+from mysite.settings import STRIPE_SECRET_KEY
 
 def start(request):
     starts = Start.objects.all().order_by()
@@ -343,7 +343,7 @@ def send_question_email_view(request):
 
 
 DOMAIN = "http://localhost:8000"
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 def subscribe(request) -> HttpResponse:
