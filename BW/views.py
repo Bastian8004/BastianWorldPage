@@ -480,12 +480,10 @@ def _update_record(webhook_event) -> None:
 @login_required
 def profile(request):
     try:
-        # Pobranie subskrypcji użytkownika
-        subscription = models.CheckoutSessionRecord.objects.get(user=request.user)
+        subscription = models.CheckoutSessionRecord.objects.filter(user=request.user).latest('created_at')
     except models.CheckoutSessionRecord.DoesNotExist:
         subscription = None
 
     return render(request, 'profile.html', {
         'subscription': subscription,
     })
-
