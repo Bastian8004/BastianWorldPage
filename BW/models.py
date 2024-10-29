@@ -224,7 +224,7 @@ class CheckoutSessionRecord(models.Model):
     stripe_price_id = models.CharField(max_length=255)
     has_access = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)  # Add this line
+    created_at = models.DateTimeField(default=timezone.now)  # Add this line
 
     def __str__(self):
         return f"Subskrypcja - {self.user}"
