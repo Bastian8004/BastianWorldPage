@@ -16,7 +16,7 @@ import stripe
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from . import models
-from mysite.settings import STRIPE_SECRET_KEY
+from mysite.settings import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
 
 def start(request):
     starts = Start.objects.all().order_by()
@@ -342,7 +342,7 @@ def send_question_email_view(request):
 
 
 
-DOMAIN = "http://localhost:8000"
+DOMAIN = "http://bastianworld"
 stripe.api_key = STRIPE_SECRET_KEY
 
 
@@ -428,7 +428,7 @@ def collect_stripe_webhook(request) -> JsonResponse:
     Stripe sends webhook events to this endpoint.
     We verify the webhook signature and updates the database record.
     """
-    webhook_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
+    webhook_secret = STRIPE_WEBHOOK_SECRET
     signature = request.META["HTTP_STRIPE_SIGNATURE"]
     payload = request.body
 
