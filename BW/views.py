@@ -342,7 +342,7 @@ def send_question_email_view(request):
 
 
 
-DOMAIN = "http://bastianworld"
+DOMAIN = "http://bastianworld.pl/"
 stripe.api_key = STRIPE_SECRET_KEY
 
 
