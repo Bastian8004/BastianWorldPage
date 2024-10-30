@@ -1,22 +1,22 @@
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpRequest
 from django.utils import timezone
-from django.urls import reverse
 import mysite.settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from .forms import ServicesForm, QualForm, ContactFormForm, BlogSForm, BlogBWForm, PostSForm, PostBWForm
 from BW.models import Services, Qualifications, Contakt, Start, BlogBW, BlogS, PostBW, PostS
-import os
 from django.shortcuts import render, redirect, reverse
+from django.contrib.auth import login
+from . import models
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import stripe
-from django.contrib.auth import login
 from django.contrib.auth.models import User
-from . import models
-from mysite.settings import STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, ALLOWED_HOSTS
+from django.http.response import JsonResponse, HttpResponse
+from BW.models import StripeCustomer
 
 def start(request):
     starts = Start.objects.all().order_by()
@@ -340,150 +340,106 @@ def send_question_email_view(request):
 
     return render(request, 'contact.html', {'form': form})
 
-
-
-DOMAIN = ALLOWED_HOSTS
-stripe.api_key = STRIPE_SECRET_KEY
-
-
-def subscribe(request) -> HttpResponse:
-    # We login a sample user for the demo.
-    user, created = User.objects.get_or_create(
-        username='AlexG', email="alexg@example.com"
-    )
-    if created:
-        user.set_password('password')
-        user.save()
-    login(request, user)
-    request.user = user
-
-    return render(request, 'profile.html')
-
-
-def cancel(request) -> HttpResponse:
-    return render(request, 'Profil/cancel.html')
-
-
-def success(request) -> HttpResponse:
-
-    print(f'{request.session = }')
-
-    stripe_checkout_session_id = request.GET['session_id']
-
-    return render(request, 'Profil/success.html')
-
-
-def create_checkout_session(request) -> HttpResponse:
-    price_lookup_key = request.POST['price_lookup_key']
-    try:
-        prices = stripe.Price.list(lookup_keys=[price_lookup_key], expand=['data.product'])
-        price_item = prices.data[0]
-
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {'price': price_item.id, 'quantity': 1},
-                # You could add differently priced services here, e.g., standard, business, first-class.
-            ],
-            mode='subscription',
-            success_url=DOMAIN + reverse('success') + '?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=DOMAIN + reverse('cancel')
-        )
-
-        # We connect the checkout session to the user who initiated the checkout.
-        models.CheckoutSessionRecord.objects.create(
-            user=request.user,
-            stripe_checkout_session_id=checkout_session.id,
-            stripe_price_id=price_item.id,
-        )
-
-        return redirect(
-            checkout_session.url,  # Either the success or cancel url.
-            code=303
-        )
-    except Exception as e:
-        print(e)
-        return HttpResponse("Server error", status=500)
-
-
-def direct_to_customer_portal(request) -> HttpResponse:
-    """
-    Creates a customer portal for the user to manage their subscription.
-    """
-    checkout_record = models.CheckoutSessionRecord.objects.filter(
-        user=request.user
-    ).last()  # For demo purposes, we get the last checkout session record the user created.
-
-    checkout_session = stripe.checkout.Session.retrieve(checkout_record.stripe_checkout_session_id)
-
-    portal_session = stripe.billing_portal.Session.create(
-        customer=checkout_session.customer,
-        return_url=DOMAIN + reverse('subscribe')  # Send the user here from the portal.
-    )
-    return redirect(portal_session.url, code=303)
-
-
-@csrf_exempt
-def collect_stripe_webhook(request) -> JsonResponse:
-    """
-    Stripe sends webhook events to this endpoint.
-    We verify the webhook signature and updates the database record.
-    """
-    webhook_secret = STRIPE_WEBHOOK_SECRET
-    signature = request.META["HTTP_STRIPE_SIGNATURE"]
-    payload = request.body
-
-    try:
-        event = stripe.Webhook.construct_event(
-            payload=payload, sig_header=signature, secret=webhook_secret
-        )
-    except ValueError as e:  # Invalid payload.
-        raise ValueError(e)
-    except stripe.error.SignatureVerificationError as e:  # Invalid signature
-        raise stripe.error.SignatureVerificationError(e)
-
-    _update_record(event)
-
-    return JsonResponse({'status': 'success'})
-
-
-def _update_record(webhook_event) -> None:
-    """
-    We update our database record based on the webhook event.
-
-    Use these events to update your database records.
-    You could extend this to send emails, update user records, set up different access levels, etc.
-    """
-    data_object = webhook_event['data']['object']
-    event_type = webhook_event['type']
-
-    if event_type == 'checkout.session.completed':
-        checkout_record = models.CheckoutSessionRecord.objects.get(
-            stripe_checkout_session_id=data_object['id']
-        )
-        checkout_record.stripe_customer_id = data_object['customer']
-        checkout_record.has_access = True
-        checkout_record.save()
-        print('🔔 Payment succeeded!')
-    elif event_type == 'customer.subscription.created':
-        print('🎟️ Subscription created')
-    elif event_type == 'customer.subscription.updated':
-        print('✍️ Subscription updated')
-    elif event_type == 'customer.subscription.deleted':
-        checkout_record = models.CheckoutSessionRecord.objects.get(
-            stripe_customer_id=data_object['customer']
-        )
-        checkout_record.has_access = False
-        checkout_record.save()
-        print('✋ Subscription canceled: %s', data_object.id)
-
-
 @login_required
 def profile(request):
     try:
-        subscription = models.CheckoutSessionRecord.objects.filter(user=request.user).latest('created_at')
-    except models.CheckoutSessionRecord.DoesNotExist:
-        subscription = None
+        # Retrieve the subscription & product
+        stripe_customer = StripeCustomer.objects.get(user=request.user)
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        subscription = stripe.Subscription.retrieve(stripe_customer.stripeSubscriptionId)
+        product = stripe.Product.retrieve(subscription.plan.product)
 
-    return render(request, 'profile.html', {
-        'subscription': subscription,
-    })
+        # current_period_end = stripe.Subscription.retrieve(stripe_customer.stripeSubscriptionId)
+
+        # Feel free to fetch any additional data from "subscription" or "product"
+        # https://stripe.com/docs/api/subscriptions/object
+        # https://stripe.com/docs/api/products/object
+
+        return render(request, "profile.html", {
+            "subscription": subscription,
+            "product": product,
+
+        })
+    except StripeCustomer.DoesNotExist:
+        return render(request, "profile.html")
+
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == "GET":
+        stripe_config = {"publicKey": settings.STRIPE_PUBLIC_KEY}
+        return JsonResponse(stripe_config, safe=True)
+
+
+
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method == "GET":
+        domain_url = "www.bastianworld.pl"
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                client_reference_id = request.user.id if request.user.is_authenticated else None,
+                success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url=domain_url + "cancel/",
+                payment_method_types= ["card"],
+                mode = "subscription",
+                line_items=[
+                    {
+                        "price": settings.STRIPE_PRICE_ID,
+                        "quantity": 1,
+                    }
+                ]
+            )
+            return JsonResponse({"sessionId": checkout_session["id"]})
+        except Exception as e:
+            return JsonResponse({"error": str(e)})
+
+
+@login_required
+def success(request):
+    return render(request, "Profile/success.html")
+
+@login_required
+def cancel(request):
+    return render(request, "Profile/cancel.html")
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+    payload = request.body
+    sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    # handle the checkout.session.completed event
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+
+        # Fetch all the required data from session
+        client_reference_id = session.get('client_reference_id')
+        stripe_customer_id = session.get('customer')
+        stripe_subscription_id = session.get("subscription")
+
+        # Get the user and create a new StripeCustomer
+        user = User.objects.get(id = client_reference_id)
+        StripeCustomer.objects.create(
+            user=user,
+            stripeCustomerId=stripe_customer_id,
+            stripeSubscriptionId=stripe_subscription_id,
+        )
+        print(user.username + " subskrybuje.")
+
+    return HttpResponse(status=200)
