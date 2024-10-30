@@ -31,12 +31,9 @@ urlpatterns = [
     path('contact', views.contact, name='contact'),
     path('contact/email/', views.send_question_email_view, name='send_question_email_view'),
     path('profile', views.profile, name='profile'),
-    path('create-checkout-session/', views.create_checkout_session, name='checkout'),
-    path('subscribe/', views.subscribe, name='subscribe'),
-    path('cancel/', views.cancel, name='cancel'),
-    path('success/', views.success, name='success'),
-    path('create-checkout-session/', views.create_checkout_session, name='create-checkout-session'),
-    path('direct-to-customer-portal/', views.direct_to_customer_portal, name='direct-to-customer-portal'),
-    path('collect-stripe-webhook/', views.collect_stripe_webhook, name='collect-stripe-webhook')
-
+    path("create-checkout-session/", views.create_checkout_session),
+    path("config/", views.stripe_config),
+    path("success/", views.success),
+    path("cancel/", views.cancel),
+    path("webhook/", views.stripe_webhook),
 ]
