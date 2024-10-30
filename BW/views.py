@@ -400,11 +400,11 @@ def create_checkout_session(request):
 
 @login_required
 def success(request):
-    return render(request, "Profile/success.html")
+    return render(request, "Profil/success.html")
 
 @login_required
 def cancel(request):
-    return render(request, "Profile/cancel.html")
+    return render(request, "Profil/cancel.html")
 
 
 @csrf_exempt
