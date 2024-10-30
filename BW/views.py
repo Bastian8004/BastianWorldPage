@@ -355,10 +355,10 @@ def profile(request):
         # https://stripe.com/docs/api/subscriptions/object
         # https://stripe.com/docs/api/products/object
 
+        print ("subscription " + subscription)
         return render(request, "profile.html", {
             "subscription": subscription,
             "product": product,
-
         })
     except StripeCustomer.DoesNotExist:
         return render(request, "profile.html")
