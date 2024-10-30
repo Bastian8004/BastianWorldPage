@@ -377,7 +377,7 @@ logger = logging.getLogger(__name__)
 def create_checkout_session(request):
     logger.info("create_checkout_session called")
     if request.method == "GET":
-        domain_url = "www.bastianworld.pl"
+        domain_url = "https://www.bastianworld.pl/"
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             checkout_session = stripe.checkout.Session.create(
