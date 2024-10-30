@@ -370,10 +370,12 @@ def stripe_config(request):
         stripe_config = {"publicKey": settings.STRIPE_PUBLIC_KEY}
         return JsonResponse(stripe_config, safe=True)
 
-
+import logging
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def create_checkout_session(request):
+    logger.info("create_checkout_session called")
     if request.method == "GET":
         domain_url = "www.bastianworld.pl"
         stripe.api_key = settings.STRIPE_SECRET_KEY
