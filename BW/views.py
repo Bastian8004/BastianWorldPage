@@ -355,7 +355,7 @@ def profile(request):
         # https://stripe.com/docs/api/subscriptions/object
         # https://stripe.com/docs/api/products/object
 
-        print ("subscription " + subscription)
+        print("subscription " + subscription)
         return render(request, "profile.html", {
             "subscription": subscription,
             "product": product,
@@ -409,20 +409,21 @@ def cancel(request):
 
 @csrf_exempt
 def stripe_webhook(request):
+    if request.method != "POST":
+        return HttpResponse(status=405)  # Method Not Allowed
+
     stripe.api_key = settings.STRIPE_SECRET_KEY
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
     payload = request.body
-    sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
+    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
     event = None
 
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, endpoint_secret
-        )
-    except ValueError as e:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError:
         # Invalid payload
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
+    except stripe.error.SignatureVerificationError:
         # Invalid signature
         return HttpResponse(status=400)
 
@@ -436,12 +437,12 @@ def stripe_webhook(request):
         stripe_subscription_id = session.get("subscription")
 
         # Get the user and create a new StripeCustomer
-        user = User.objects.get(id = client_reference_id)
+        user = User.objects.get(id=client_reference_id)
         StripeCustomer.objects.create(
             user=user,
             stripeCustomerId=stripe_customer_id,
             stripeSubscriptionId=stripe_subscription_id,
         )
-        print(user.username + " subskrybuje.")
+        print(f"{user.username} subskrybuje.")
 
     return HttpResponse(status=200)
