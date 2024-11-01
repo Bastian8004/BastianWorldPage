@@ -24,6 +24,6 @@ def print_timestamp(timestamp, format_type="YMD"):
     if format_type == "PL":
         return date_obj.strftime('%d.%m.%Y')  # Format polski DD.MM.YYYY
     else:
-        return date_obj.strftime('%Y-%m-%d')  # Format YYYY-MM-DD
+        return date_obj.strftime('%d-%m-%Y, %H:%M')  # Format YYYY-MM-DD
 
 register.filter("print_timestamp", print_timestamp)
