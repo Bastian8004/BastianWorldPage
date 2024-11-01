@@ -343,23 +343,17 @@ def send_question_email_view(request):
 @login_required
 def profile(request):
     try:
-        # Retrieve the subscription & product
         stripe_customer = StripeCustomer.objects.get(user=request.user)
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        subscription = stripe.Subscription.retrieve(stripe_customer.stripeSubscriptionId)
-        product = stripe.Product.retrieve(subscription.plan.product)
-
-        # current_period_end = stripe.Subscription.retrieve(stripe_customer.stripeSubscriptionId)
-
-        # Feel free to fetch any additional data from "subscription" or "product"
-        # https://stripe.com/docs/api/subscriptions/object
-        # https://stripe.com/docs/api/products/object
-
-        print("subscription " + subscription)
-        return render(request, "profile.html", {
-            "subscription": subscription,
-            "product": product,
-        })
+        if stripe_customer.stripeSubscriptionId:
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            subscription = stripe.Subscription.retrieve(stripe_customer.stripeSubscriptionId)
+            product = stripe.Product.retrieve(subscription.plan.product)
+            return render(request, "profile.html", {
+                "subscription": subscription,
+                "product": product,
+            })
+        else:
+            return render(request, "profile.html")
     except StripeCustomer.DoesNotExist:
         return render(request, "profile.html")
 
@@ -409,41 +403,46 @@ def cancel(request):
 
 @csrf_exempt
 def stripe_webhook(request):
-    if request.method == "GET":
-        return HttpResponse("This endpoint only accepts POST requests.", status=405)
-
     if request.method == "POST":
         stripe.api_key = settings.STRIPE_SECRET_KEY
         endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
         payload = request.body
         sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
-        event = None
 
         try:
             event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
-        except ValueError:
-            # Invalid payload
-            return HttpResponse(status=400)
-        except stripe.error.SignatureVerificationError:
-            # Invalid signature
+        except (ValueError, stripe.error.SignatureVerificationError):
             return HttpResponse(status=400)
 
-        # handle the checkout.session.completed event
-        if event["type"] == "checkout.session.completed":
-            session = event["data"]["object"]
+        # Obsługa eventów Stripe dotyczących subskrypcji
+        event_type = event["type"]
+        data_object = event["data"]["object"]
 
-            # Fetch all the required data from session
-            client_reference_id = session.get('client_reference_id')
-            stripe_customer_id = session.get('customer')
-            stripe_subscription_id = session.get("subscription")
-
-            # Get the user and create a new StripeCustomer
+        if event_type == "checkout.session.completed":
+            client_reference_id = data_object.get("client_reference_id")
+            stripe_customer_id = data_object.get("customer")
+            stripe_subscription_id = data_object.get("subscription")
             user = User.objects.get(id=client_reference_id)
-            StripeCustomer.objects.create(
+
+            StripeCustomer.objects.update_or_create(
                 user=user,
-                stripeCustomerId=stripe_customer_id,
-                stripeSubscriptionId=stripe_subscription_id,
+                defaults={
+                    "stripeCustomerId": stripe_customer_id,
+                    "stripeSubscriptionId": stripe_subscription_id,
+                },
             )
-            print(f"{user.username} subskrybuje.")
+            logger.info(f"{user.username} subskrybuje.")
+
+        elif event_type == "customer.subscription.updated":
+            # Zaktualizuj dane subskrypcji w StripeCustomer
+            stripe_subscription_id = data_object.get("id")
+            status = data_object.get("status")
+
+            StripeCustomer.objects.filter(stripeSubscriptionId=stripe_subscription_id).update(status=status)
+
+        elif event_type == "customer.subscription.deleted":
+            # Oznacz subskrypcję jako usuniętą
+            stripe_subscription_id = data_object.get("id")
+            StripeCustomer.objects.filter(stripeSubscriptionId=stripe_subscription_id).delete()
 
         return HttpResponse(status=200)
