@@ -6,14 +6,14 @@
 <div class="news_section layout_padding">
     <div class="container">
       <h1 class="banner_taital">Subskrypcja administracyjna</h1>
-      <br>
-      <br>
-      <br>
       {% if subscription and subscription.status == "active" %}
       <div class="news_section_2">
         <div class="row">
           <div class="col-md-12">
             <div class="news_taital_box">
+              <br>
+              <br>
+              <br>
               <h1 class="client_taital">{{ product.name }}</h1>
               <br>
               <h1 class="client_taital">Rozpoczęcie: {{ subscription.current_period_start | print_timestamp }}</h1>
