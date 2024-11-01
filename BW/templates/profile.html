@@ -3,28 +3,29 @@
 
 {% block content %}
 
-<h1 class="banner_taital">Subskrypcja administracyjna</h1>
-
-    <div class="client_section layout_padding">
-      <div class="container">
-        <div class="email_text">
+<div class="news_section layout_padding">
+    <div class="container">
+      <h1 class="banner_taital">Subskrypcja administracyjna</h1>
       {% if subscription and subscription.status == "active" %}
-      <h4>Twoja subskrybcja:</h4>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text">{{ product.description }}</p>
-          <p class="card-text">Rozpoczęcie: {{ subscription.current_period_start | print_timestamp }}</p>
-          <p class="card-text">Odnowienie: {{ subscription.current_period_end | print_timestamp }}</p>
+      <div class="news_section_2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="news_taital_box">
+              <h1 class="client_taital">{{ product.name }}</h1>
+              <br>
+              <h1 class="client_taital">Rozpoczęcie: {{ subscription.current_period_start | print_timestamp }}</h1>
+              <h1 class="client_taital">Odnowienie: {{ subscription.current_period_end | print_timestamp }}</h1>
+            </div>
+          </div>
         </div>
       </div>
       {% else %}
-          <div class="send_btn">
-            <button type="submit" class="send_btn" id="submitBtn">Subskrybuj</button>
-          </div>
-      {% endif %}
-        </div>
+      <div class="send_btn">
+        <button type="submit" class="send_btn" id="submitBtn">Subskrybuj</button>
       </div>
+      {% endif %}
     </div>
+</div>
 
 {% endblock %}
+
