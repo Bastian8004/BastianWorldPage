@@ -371,18 +371,25 @@ logger = logging.getLogger(__name__)
 def create_checkout_session(request):
     logger.info("create_checkout_session called")
     if request.method == "GET":
+        subscription_type = request.GET.get("type", "basic")
+        price_id = {
+            "basic": settings.STRIPE_PRICE_ID_BASIC,
+            "premium": settings.STRIPE_PRICE_ID_PREMIUM,
+            "prime": settings.STRIPE_PRICE_ID_PRIME,
+        }.get(subscription_type, settings.STRIPE_PRICE_ID_BASIC)
+
         domain_url = "https://www.bastianworld.pl/"
         stripe.api_key = settings.STRIPE_SECRET_KEY
         try:
             checkout_session = stripe.checkout.Session.create(
-                client_reference_id = request.user.id if request.user.is_authenticated else None,
+                client_reference_id=request.user.id if request.user.is_authenticated else None,
                 success_url=domain_url + "success?session_id={CHECKOUT_SESSION_ID}",
                 cancel_url=domain_url + "cancel/",
-                payment_method_types= ["card"],
-                mode = "subscription",
+                payment_method_types=["card"],
+                mode="subscription",
                 line_items=[
                     {
-                        "price": settings.STRIPE_PRICE_ID,
+                        "price": price_id,
                         "quantity": 1,
                     }
                 ]
@@ -390,6 +397,7 @@ def create_checkout_session(request):
             return JsonResponse({"sessionId": checkout_session["id"]})
         except Exception as e:
             return JsonResponse({"error": str(e)})
+
 
 
 @login_required

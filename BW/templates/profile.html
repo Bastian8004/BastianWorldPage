@@ -16,18 +16,30 @@
               <h1 class="client_taital">Rozpoczęcie: {{ subscription.current_period_start | print_timestamp }}</h1>
               <h1 class="client_taital">Odnowienie: {{ subscription.current_period_end | print_timestamp }}</h1>
               <br>
-              <p class="lorem_text">W ciągu 48h otrzymasz email z potwierdzeniem działania strony na serwerze. Jeśli go nie otrzymasz skontaktuj się z nami. W przypadku rezygnacji również prosimy o kontakt!</p>
+              <p class="lorem_text">W ciągu 48h otrzymasz email z potwierdzeniem działania strony na serwerze. Jeśli go nie otrzymasz, skontaktuj się z nami. W przypadku rezygnacji również prosimy o kontakt!</p>
             </div>
           </div>
         </div>
       </div>
+      {% elif request.user.username|slice:"-5:" == "prime" %}
+      <!-- Link dla subskrypcji Prime -->
+      <div class="button_container">
+        <div class="read_bta">
+          <a href="{% url 'create_checkout_session' %}?type=prime" class="send_btn">Subskrybcja "Prime"</a>
+        </div>
+      </div>
       {% else %}
-      <div class="send_btn">
-        <button type="submit" class="send_btn" id="submitBtn">Subskrybuj</button>
+      <!-- Linki dla subskrypcji podstawowej i premium -->
+      <div class="button_container">
+        <div class="read_bta">
+          <a href="{% url 'create_checkout_session' %}?type=basic" class="send_btn">Subskrybcja Administracyjna</a>
+        </div>
+        <div class="read_bta">
+          <a href="{% url 'create_checkout_session' %}?type=premium" class="send_btn">Subskrybcja Administracyjna Premium</a>
+        </div>
       </div>
       {% endif %}
     </div>
 </div>
 
 {% endblock %}
-
